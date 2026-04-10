@@ -31,7 +31,7 @@ export default function Square({
             {leftLabel ? <span className="coord-left">{leftLabel}</span> : null}
             {bottomLabel ? <span className="coord-bottom">{bottomLabel}</span> : null}
             {piece ? <Piece piece={piece} /> : null}
-            {isTarget ? <span className="target-dot" /> : null}
+            {isTarget ? <span className="target-square" /> : null}
         </button>
     );
 }

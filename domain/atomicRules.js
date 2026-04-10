@@ -14,13 +14,17 @@ const EXPLOSION_OFFSETS = [
     [1, 1],
 ];
 
-function removeIfExplodable(board, file, rank, removedIds) {
+function removeIfExplodable(board, file, rank, removedIds, isTargetSquare) {
     const piece = getPiece(board, file, rank);
     if (!piece) {
         return;
     }
 
     if (KINGS_IMMUNE_TO_EXPLOSION && piece.type === PIECE_TYPES.KING) {
+        return;
+    }
+
+    if (piece.type === PIECE_TYPES.PAWN && !isTargetSquare) {
         return;
     }
 
@@ -55,11 +59,15 @@ export function applyMoveOnBoard(board, move) {
         for (const [fileOffset, rankOffset] of EXPLOSION_OFFSETS) {
             const file = move.to.file + fileOffset;
             const rank = move.to.rank + rankOffset;
+            
             if (!inBounds(file, rank)) {
                 continue;
             }
 
-            removeIfExplodable(nextBoard, file, rank, explodedPieceIds);
+            const isTargetSquare = file === move.to.file && rank === move.to.rank;
+
+            // Don't capture pawns that surround the explosion area
+            removeIfExplodable(nextBoard, file, rank, explodedPieceIds, isTargetSquare);
         }
     }
 
