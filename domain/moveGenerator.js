@@ -174,6 +174,8 @@ function getKingMoves(board, piece, file, rank) {
         }
 
         const target = getPiece(board, toFile, toRank);
+        
+        // King cannot capture enemies
         if (!target || isEnemy(piece, target)) {
             moves.push(makeMove(piece, file, rank, toFile, toRank, target));
         }
@@ -231,6 +233,8 @@ export function getPseudoLegalMovesForColor(board, color) {
             moves.push(...getPseudoMovesForPiece(board, file, rank));
         }
     }
+
+    console.log(moves)
 
     return moves;
 }

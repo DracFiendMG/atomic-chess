@@ -13,6 +13,9 @@ export default function Board({
 }) {
     const squares = [];
 
+    console.log(board)
+    console.log(targetSquareKeys)
+
     for (let rank = 0; rank < 8; rank += 1) {
         for (let file = 0; file < 8; file += 1) {
             const key = toSquareKey(file, rank);

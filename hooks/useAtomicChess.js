@@ -61,6 +61,8 @@ export function useAtomicChess() {
         const clickedOwnPiece =
             clickedPiece && clickedPiece.color === gameState.turn;
 
+        console.log(selectedSquare)
+
         if (selectedSquare) {
             const chosenMove = selectedMoves.find(
                 (move) => move.to.file === file && move.to.rank === rank

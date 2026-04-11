@@ -105,24 +105,26 @@ body {
 .piece {
     width: 82%;
     aspect-ratio: 1 / 1;
-    display: block;
+    display: grid;
+    place-items: center;
     user-select: none;
     z-index: 2;
     pointer-events: none;
 }
 
 .piece-white {
+    color: #f6efe3;
     filter: drop-shadow(0 2px 2px rgba(24, 18, 11, 0.35));
 }
 
 .piece-black {
+    color: #2d2418;
     filter: drop-shadow(0 2px 2px rgba(12, 8, 4, 0.45));
 }
 
-.piece-svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+.piece-icon {
+    font-size: clamp(1.95rem, 5.2vw, 3.25rem);
+    line-height: 1;
 }
 
 .target-square {
