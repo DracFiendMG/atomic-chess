@@ -20,9 +20,9 @@ function removeIfExplodable(board, file, rank, removedIds, isTargetSquare) {
         return;
     }
 
-    if (KINGS_IMMUNE_TO_EXPLOSION && piece.type === PIECE_TYPES.KING) {
-        return;
-    }
+    // if (KINGS_IMMUNE_TO_EXPLOSION && piece.type === PIECE_TYPES.KING) {
+    //     return;
+    // }
 
     if (piece.type === PIECE_TYPES.PAWN && !isTargetSquare) {
         return;
@@ -66,7 +66,7 @@ export function applyMoveOnBoard(board, move) {
 
             const isTargetSquare = file === move.to.file && rank === move.to.rank;
 
-            // Don't capture pawns that surround the explosion area
+            // Surrounding PAWNs are not affected by the explosion unless they are on the target square
             removeIfExplodable(nextBoard, file, rank, explodedPieceIds, isTargetSquare);
         }
     }
