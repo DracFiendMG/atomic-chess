@@ -5,6 +5,7 @@ Atomic Chess is a React + Vite web app for building a chess experience with an e
 ## System Design
 
 - Detailed architecture and implementation blueprint: [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md)
+- AI opponent design and minimax details: [AI_PLAYER.md](AI_PLAYER.md)
 
 ## Project Overview
 

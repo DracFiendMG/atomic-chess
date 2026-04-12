@@ -177,6 +177,55 @@ body {
     font-size: 0.95rem;
 }
 
+.ai-controls {
+    margin-top: 0.95rem;
+    border: 1px solid #d8ccbb;
+    border-radius: 8px;
+    padding: 0.7rem;
+    background: #fdf8ef;
+}
+
+.ai-controls h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.ai-toggle {
+    margin-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.92rem;
+    color: var(--text);
+}
+
+.ai-difficulty-label {
+    display: block;
+    margin-top: 0.55rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.ai-difficulty-select {
+    margin-top: 0.35rem;
+    width: 100%;
+    border: 1px solid #cfbfa8;
+    border-radius: 6px;
+    padding: 0.45rem 0.55rem;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: #fff;
+}
+
+.ai-status-line {
+    margin: 0.5rem 0 0;
+    font-size: 0.86rem;
+    color: var(--muted);
+}
+
 .restart-button {
     margin-top: 0.85rem;
     border: 0;

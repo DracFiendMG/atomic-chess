@@ -14,8 +14,15 @@ export default function App() {
         targetSquareKeys,
         checkedKingSquare,
         legalMovesCount,
+        aiEnabled,
+        aiDifficulty,
+        aiDifficultyOptions,
+        aiColor,
+        isAiThinking,
         onSquareClick,
         onRestart,
+        onAiEnabledChange,
+        onAiDifficultyChange,
     } = useAtomicChess();
 
     return (
@@ -37,7 +44,14 @@ export default function App() {
                 winner={winner}
                 legalMovesCount={legalMovesCount}
                 moveHistory={moveHistory}
+                aiEnabled={aiEnabled}
+                aiDifficulty={aiDifficulty}
+                aiDifficultyOptions={aiDifficultyOptions}
+                aiColor={aiColor}
+                isAiThinking={isAiThinking}
                 onRestart={onRestart}
+                onAiEnabledChange={onAiEnabledChange}
+                onAiDifficultyChange={onAiDifficultyChange}
             />
         </main>
     );

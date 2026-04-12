@@ -24,12 +24,57 @@ export default function GamePanel({
     winner,
     legalMovesCount,
     moveHistory,
+    aiEnabled,
+    aiDifficulty,
+    aiDifficultyOptions,
+    aiColor,
+    isAiThinking,
     onRestart,
+    onAiEnabledChange,
+    onAiDifficultyChange,
 }) {
     return (
         <aside className="game-panel">
             <h1>Atomic Chess</h1>
             <p className="status-line">{getStatusText(status, turn, winner, legalMovesCount)}</p>
+
+            <section className="ai-controls">
+                <h2>Opponent</h2>
+                <label className="ai-toggle">
+                    <input
+                        type="checkbox"
+                        checked={aiEnabled}
+                        onChange={(event) => onAiEnabledChange(event.target.checked)}
+                    />
+                    Play against AI ({toTitleCase(aiColor)})
+                </label>
+
+                <label className="ai-difficulty-label" htmlFor="ai-difficulty-select">
+                    Difficulty
+                </label>
+                <select
+                    id="ai-difficulty-select"
+                    className="ai-difficulty-select"
+                    value={aiDifficulty}
+                    disabled={!aiEnabled || isAiThinking}
+                    onChange={(event) => onAiDifficultyChange(event.target.value)}
+                >
+                    {aiDifficultyOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+
+                <p className="ai-status-line">
+                    {aiEnabled
+                        ? isAiThinking
+                            ? "AI is thinking..."
+                            : `${toTitleCase(aiColor)} AI is ready.`
+                        : "AI disabled: local two-player mode."}
+                </p>
+            </section>
+
             <button type="button" className="restart-button" onClick={onRestart}>
                 Restart Game
             </button>

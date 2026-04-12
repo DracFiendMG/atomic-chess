@@ -234,7 +234,5 @@ export function getPseudoLegalMovesForColor(board, color) {
         }
     }
 
-    console.log(moves)
-
     return moves;
 }

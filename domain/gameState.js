@@ -37,10 +37,13 @@ export function getLegalMovesForColor(state, color) {
     return pseudoMoves.filter((candidateMove) => {
         const simulation = applyMoveOnBoard(state.board, candidateMove);
 
+        // Checks whether the king is still present on the board.
         if (!isKingAlive(simulation.board, color)) {
             return false;
         }
 
+        // Checks whether the move would put the king at an attacked square.
+        // If the square is attacked, the move is illegal, even if the king is not currently in check.
         return !isKingInCheck(simulation.board, color);
     });
 }

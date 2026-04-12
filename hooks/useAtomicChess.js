@@ -1,21 +1,74 @@
-import { useMemo, useState } from "react";
-import { GAME_STATUS } from "../domain/constants";
+import { useEffect, useMemo, useState } from "react";
+import { BLACK, GAME_STATUS } from "../domain/constants";
 import { toSquareKey } from "../domain/coords";
 import { findKing } from "../domain/endConditions";
+import {
+    AI_DIFFICULTY_OPTIONS,
+    DEFAULT_AI_DIFFICULTY,
+    chooseAIMove,
+} from "../domain/aiPlayer";
 import {
     applyMoveToGameState,
     createInitialGameState,
     getLegalMovesForColor,
 } from "../domain/gameState";
 
+const AI_COLOR = BLACK;
+const AI_MOVE_DELAY_MS = 260;
+
 export function useAtomicChess() {
     const [gameState, setGameState] = useState(() => createInitialGameState());
     const [selectedSquare, setSelectedSquare] = useState(null);
+    const [aiEnabled, setAiEnabled] = useState(true);
+    const [aiDifficulty, setAiDifficulty] = useState(DEFAULT_AI_DIFFICULTY);
+    const [isAiThinking, setIsAiThinking] = useState(false);
 
     const legalMoves = useMemo(
         () => getLegalMovesForColor(gameState, gameState.turn),
         [gameState]
     );
+
+    const isGameOver =
+        gameState.status === GAME_STATUS.CHECKMATE ||
+        gameState.status === GAME_STATUS.STALEMATE;
+    const isAiTurn = aiEnabled && gameState.turn === AI_COLOR && !isGameOver;
+
+    useEffect(() => {
+        if (!isAiTurn) {
+            setIsAiThinking(false);
+            return;
+        }
+
+        setIsAiThinking(true);
+        const timerId = window.setTimeout(() => {
+            setGameState((prevState) => {
+                const prevGameOver =
+                    prevState.status === GAME_STATUS.CHECKMATE ||
+                    prevState.status === GAME_STATUS.STALEMATE;
+                if (!aiEnabled || prevState.turn !== AI_COLOR || prevGameOver) {
+                    return prevState;
+                }
+
+                const aiMove = chooseAIMove(prevState, {
+                    difficulty: aiDifficulty,
+                    color: AI_COLOR,
+                });
+
+                if (!aiMove) {
+                    return prevState;
+                }
+
+                return applyMoveToGameState(prevState, aiMove);
+            });
+
+            setIsAiThinking(false);
+            setSelectedSquare(null);
+        }, AI_MOVE_DELAY_MS);
+
+        return () => {
+            window.clearTimeout(timerId);
+        };
+    }, [aiDifficulty, aiEnabled, isAiTurn]);
 
     const selectedMoves = useMemo(() => {
         if (!selectedSquare) {
@@ -57,11 +110,13 @@ export function useAtomicChess() {
             return;
         }
 
+        if (isAiThinking || (aiEnabled && gameState.turn === AI_COLOR)) {
+            return;
+        }
+
         const clickedPiece = gameState.board[rank][file];
         const clickedOwnPiece =
             clickedPiece && clickedPiece.color === gameState.turn;
-
-        console.log(selectedSquare)
 
         if (selectedSquare) {
             const chosenMove = selectedMoves.find(
@@ -93,6 +148,16 @@ export function useAtomicChess() {
     function restartGame() {
         setGameState(createInitialGameState());
         setSelectedSquare(null);
+        setIsAiThinking(false);
+    }
+
+    function handleAiEnabledChange(nextValue) {
+        setAiEnabled(nextValue);
+        setSelectedSquare(null);
+    }
+
+    function handleAiDifficultyChange(nextDifficulty) {
+        setAiDifficulty(nextDifficulty);
     }
 
     return {
@@ -106,7 +171,14 @@ export function useAtomicChess() {
         targetSquareKeys,
         checkedKingSquare,
         legalMovesCount: legalMoves.length,
+        aiEnabled,
+        aiDifficulty,
+        aiDifficultyOptions: AI_DIFFICULTY_OPTIONS,
+        aiColor: AI_COLOR,
+        isAiThinking,
         onSquareClick: handleSquareClick,
         onRestart: restartGame,
+        onAiEnabledChange: handleAiEnabledChange,
+        onAiDifficultyChange: handleAiDifficultyChange,
     };
 }
