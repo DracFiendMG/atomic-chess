@@ -1,5 +1,5 @@
 export default function Piece({ piece }) {
-    const weightClass = piece.color === "black" ? "fa-solid" : "fa-regular";
+    const weightClass = "fa-solid";
     const iconClass = `fa-chess-${piece.type}`;
 
     return (
