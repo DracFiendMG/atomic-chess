@@ -7,6 +7,7 @@ export default function Board({
     board,
     selectedSquare,
     targetSquareKeys,
+    explosionSquareKeys,
     lastMove,
     checkedKingSquare,
     onSquareClick,
@@ -23,6 +24,7 @@ export default function Board({
                 selectedSquare.file === file &&
                 selectedSquare.rank === rank;
             const isTarget = targetSquareKeys.has(key);
+            const isExplosion = explosionSquareKeys?.has(key);
             const isLastMove =
                 Boolean(lastMove) &&
                 ((lastMove.from.file === file && lastMove.from.rank === rank) ||
@@ -39,6 +41,7 @@ export default function Board({
                     isDark={isDark}
                     isSelected={isSelected}
                     isTarget={isTarget}
+                    isExplosion={isExplosion}
                     isLastMove={isLastMove}
                     isCheckedKing={isCheckedKing}
                     leftLabel={file === 0 ? String(8 - rank) : null}

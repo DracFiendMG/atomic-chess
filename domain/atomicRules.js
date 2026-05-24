@@ -36,7 +36,12 @@ export function applyMoveOnBoard(board, move) {
     const nextBoard = cloneBoard(board);
     const movingPiece = getPiece(nextBoard, move.from.file, move.from.rank);
     if (!movingPiece) {
-        return { board: nextBoard, capturedPiece: null, explodedPieceIds: [] };
+        return {
+            board: nextBoard,
+            capturedPiece: null,
+            explodedPieceIds: [],
+            explosionSquares: [],
+        };
     }
 
     const targetPiece = getPiece(nextBoard, move.to.file, move.to.rank);
@@ -52,6 +57,7 @@ export function applyMoveOnBoard(board, move) {
     setPiece(nextBoard, move.to.file, move.to.rank, movedPiece);
 
     const explodedPieceIds = [];
+    const explosionSquares = [];
 
     if (isCapture) {
         explodedPieceIds.push(targetPiece.id);
@@ -66,6 +72,8 @@ export function applyMoveOnBoard(board, move) {
 
             const isTargetSquare = file === move.to.file && rank === move.to.rank;
 
+            explosionSquares.push({ file, rank });
+
             // Surrounding PAWNs are not affected by the explosion unless they are on the target square
             removeIfExplodable(nextBoard, file, rank, explodedPieceIds, isTargetSquare);
         }
@@ -75,5 +83,6 @@ export function applyMoveOnBoard(board, move) {
         board: nextBoard,
         capturedPiece: targetPiece,
         explodedPieceIds,
+        explosionSquares,
     };
 }

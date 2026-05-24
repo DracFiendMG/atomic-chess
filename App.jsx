@@ -12,6 +12,7 @@ export default function App() {
         lastMove,
         selectedSquare,
         targetSquareKeys,
+        explosionSquareKeys,
         checkedKingSquare,
         legalMovesCount,
         aiEnabled,
@@ -32,6 +33,7 @@ export default function App() {
                     board={board}
                     selectedSquare={selectedSquare}
                     targetSquareKeys={targetSquareKeys}
+                    explosionSquareKeys={explosionSquareKeys}
                     lastMove={lastMove}
                     checkedKingSquare={checkedKingSquare}
                     onSquareClick={onSquareClick}

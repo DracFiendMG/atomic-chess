@@ -15,6 +15,7 @@ import {
 
 const AI_COLOR = BLACK;
 const AI_MOVE_DELAY_MS = 260;
+const EXPLOSION_DURATION_MS = 520;
 
 export function useAtomicChess() {
     const [gameState, setGameState] = useState(() => createInitialGameState());
@@ -22,6 +23,7 @@ export function useAtomicChess() {
     const [aiEnabled, setAiEnabled] = useState(true);
     const [aiDifficulty, setAiDifficulty] = useState(DEFAULT_AI_DIFFICULTY);
     const [isAiThinking, setIsAiThinking] = useState(false);
+    const [explosionSquareKeys, setExplosionSquareKeys] = useState(() => new Set());
 
     const legalMoves = useMemo(
         () => getLegalMovesForColor(gameState, gameState.turn),
@@ -69,6 +71,32 @@ export function useAtomicChess() {
             window.clearTimeout(timerId);
         };
     }, [aiDifficulty, aiEnabled, isAiTurn]);
+
+    useEffect(() => {
+        if (!gameState.lastMove?.flags?.isExplosion) {
+            setExplosionSquareKeys(new Set());
+            return;
+        }
+
+        const squares = gameState.lastMove.explodedSquares ?? [];
+        if (squares.length === 0) {
+            setExplosionSquareKeys(new Set());
+            return;
+        }
+
+        const nextKeys = new Set(
+            squares.map((square) => toSquareKey(square.file, square.rank))
+        );
+        setExplosionSquareKeys(nextKeys);
+
+        const timerId = window.setTimeout(() => {
+            setExplosionSquareKeys(new Set());
+        }, EXPLOSION_DURATION_MS);
+
+        return () => {
+            window.clearTimeout(timerId);
+        };
+    }, [gameState.lastMove]);
 
     const selectedMoves = useMemo(() => {
         if (!selectedSquare) {
@@ -149,6 +177,7 @@ export function useAtomicChess() {
         setGameState(createInitialGameState());
         setSelectedSquare(null);
         setIsAiThinking(false);
+        setExplosionSquareKeys(new Set());
     }
 
     function handleAiEnabledChange(nextValue) {
@@ -169,6 +198,7 @@ export function useAtomicChess() {
         lastMove: gameState.lastMove,
         selectedSquare,
         targetSquareKeys,
+        explosionSquareKeys,
         checkedKingSquare,
         legalMovesCount: legalMoves.length,
         aiEnabled,

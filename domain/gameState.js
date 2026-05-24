@@ -71,6 +71,7 @@ export function applyMoveToGameState(state, requestedMove) {
         capturePieceId: moveResult.capturedPiece ? moveResult.capturedPiece.id : null,
         promotionType: legalMove.promotionType,
         explodedPieceIds: moveResult.explodedPieceIds,
+        explodedSquares: moveResult.explosionSquares,
         notation: toMoveNotation(legalMove, wasCapture),
         flags: {
             isCapture: wasCapture,

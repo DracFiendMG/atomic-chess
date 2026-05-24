@@ -71,6 +71,7 @@ body {
     place-items: center;
     cursor: pointer;
     transition: filter 120ms ease, transform 120ms ease;
+    overflow: hidden;
 }
 
 .square:hover {
@@ -134,6 +135,34 @@ body {
     background: rgba(12, 111, 83, 0.72);
     position: absolute;
     z-index: 1;
+}
+
+.explosion-burst {
+    position: absolute;
+    inset: -10%;
+    border-radius: 12px;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255, 240, 120, 0.95) 0%, rgba(255, 166, 64, 0.75) 35%, rgba(202, 62, 48, 0.65) 60%, rgba(132, 24, 24, 0) 70%),
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 197, 120, 0.6) 45%, rgba(255, 255, 255, 0) 70%);
+    z-index: 3;
+    pointer-events: none;
+    animation: explosion-burst 520ms ease-out both;
+    mix-blend-mode: screen;
+}
+
+@keyframes explosion-burst {
+    0% {
+        transform: scale(0.35);
+        opacity: 0.25;
+    }
+    35% {
+        transform: scale(1.05);
+        opacity: 0.95;
+    }
+    100% {
+        transform: scale(1.35);
+        opacity: 0;
+    }
 }
 
 .coord-left,

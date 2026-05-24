@@ -5,6 +5,7 @@ export default function Square({
     isDark,
     isSelected,
     isTarget,
+    isExplosion,
     isLastMove,
     isCheckedKing,
     leftLabel,
@@ -32,6 +33,7 @@ export default function Square({
             {bottomLabel ? <span className="coord-bottom">{bottomLabel}</span> : null}
             {piece ? <Piece piece={piece} /> : null}
             {isTarget ? <span className="target-square" /> : null}
+            {isExplosion ? <span className="explosion-burst" /> : null}
         </button>
     );
 }
